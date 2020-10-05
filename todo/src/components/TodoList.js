@@ -7,17 +7,18 @@ const initalState = [{
 }]
 
 const reducer = (state, action) => {
-    switch(action.type) {
+    switch (action.type) {
         case 'SUBMIT_FORM':
-            return[
+            return [
                 ...state,
-                action.payload
+                action.payload,
             ]
 
-        case 'UPDATE_CHEKCBOX':
-            return[]
+        case 'TOGGLE_CHECKBOX':   
+        return [
+            ...state.map(item => item.id === action.payload ? {...item, completed: !item.completed} : item )
+        ]
 
-        
         default:
             return state;
     }
@@ -39,7 +40,6 @@ const TodoList = () => {
 
 
     /****HELPER FUNCTIONS*****/
-    
     const handleChanges = (e) => {
         setNewTodoTask({ ...newTodoTask, [e.target.name]: e.target.value })
         console.log(newTodoTask)
@@ -61,28 +61,15 @@ const TodoList = () => {
                     ...item,
                     completed: !item.completed,
                 }
-                return newTaskObj
+
+                dispatch({ type: 'TOGGLE_CHECKBOX', payload: newTaskObj })
             }
         })
-        console.log('toggleCompleted', newTaskObj)
     }
-
-    // function toggleCompleted(id) {
-    //     state.map(item => {
-    //         if (item.id === id) {
-    //             return {
-    //                 ...item,
-    //                 completed: !item.completed,
-    //             }
-    //         }
-    //     })
-    //     console.log('toggleCompleted', state)
-    // }
-    /*********/
 
     return (
         <div>
-            <form onSubmit={event => handleSubmit(event) }>
+            <form onSubmit={event => handleSubmit(event)}>
                 <input
                     name='task'
                     // value={newTodoTask.task}
@@ -97,11 +84,12 @@ const TodoList = () => {
             {state.map(item => (
                 <div key={item.id} className='todoItem'>
                     <input
-                    name='checkbox'
-                    type='checkbox'
-                    onChange={() => toggleCompleted(item.id) }
+                        name='checkbox'
+                        type='checkbox'
+                        // onChange={() => toggleCompleted(item.id)}
+                        onChange={() => dispatch( {type: 'TOGGLE_CHECKBOX', payload: item.id})}
                     />
-                    <p> {item.task} </p>
+                    <p className={item.completed ? 'hiddenBtn' : 'Btn'}> {item.task} </p>
                 </div>
             ))}
         </div>

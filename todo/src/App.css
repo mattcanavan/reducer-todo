@@ -42,3 +42,7 @@
   justify-content: center;
   line-height: 1rem;
 }
+
+.hiddenBtn{
+  text-decoration: line-through ;
+}
