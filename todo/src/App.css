@@ -37,7 +37,8 @@
   }
 }
 
-.addBtn{
-  border: 2px tomato dotted;
-  margin-left: 10px; 
+.todoItem{
+  display: flex;
+  justify-content: center;
+  line-height: 1rem;
 }
